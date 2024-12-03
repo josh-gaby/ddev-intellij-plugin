@@ -2,7 +2,6 @@ package de.php_perfect.intellij.ddev.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.project.Project;
 import de.php_perfect.intellij.ddev.cmd.DdevRunner;
 import de.php_perfect.intellij.ddev.cmd.Description;
@@ -15,7 +14,11 @@ import org.jetbrains.annotations.NotNull;
 public final class DdevToggleXdebugAction extends DdevRunAction {
     @Override
     protected void run(@NotNull Project project) {
-        DdevRunner.getInstance().toggleXdebug(project);
+        try {
+            DdevRunner.getInstance().toggleXdebug(project);
+        } catch (Exception ignored) {
+
+        }
     }
 
     public void update(@NotNull AnActionEvent e) {

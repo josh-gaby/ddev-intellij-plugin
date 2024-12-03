@@ -69,7 +69,7 @@ public final class DdevRunnerImpl implements DdevRunner {
     public void toggleXdebug(@NotNull Project project) {
         final String title = DdevIntegrationBundle.message("ddev.run.toggleXdebug");
         final Runner runner = Runner.getInstance(project);
-        runner.run(this.createCommandLine("xdebug toggle", project), title, () -> this.updateDescription(project));
+        runner.run(this.createCommandLine("xdebug toggle", project), title, () -> this.updateDescription(project), false);
     }
 
     @Override
@@ -112,7 +112,7 @@ public final class DdevRunnerImpl implements DdevRunner {
     private @NotNull GeneralCommandLine createCommandLine(@NotNull String ddevAction, @NotNull Project project) {
         State state = DdevStateManager.getInstance(project).getState();
 
-        List<String> commandsParts = new ArrayList<String>();
+        List<String> commandsParts = new ArrayList<>();
         commandsParts.add(Objects.requireNonNull(state.getDdevBinary()));
         commandsParts.addAll(Arrays.asList(ddevAction.trim().split("\\s+")));
 
