@@ -32,13 +32,17 @@ public final class RunnerImpl implements Runner, Disposable {
 
     @Override
     public void run(@NotNull GeneralCommandLine commandLine, @NotNull String title, @Nullable Runnable afterCompletion) {
+        this.run(commandLine, title, null, true);
+    }
+    @Override
+    public void run(@NotNull GeneralCommandLine commandLine, @NotNull String title, @Nullable Runnable afterCompletion, boolean showWindow) {
         ApplicationManager.getApplication().invokeLater(() -> {
             try {
                 final ProcessHandler processHandler = this.createProcessHandler(commandLine);
                 final RunContentExecutor runContentExecutor = new RunContentExecutor(this.project, processHandler)
-                        .withTitle(title)
-                        .withActivateToolWindow(true)
                         .withAfterCompletion(afterCompletion)
+                        .withTitle(title)
+                        .withActivateToolWindow(showWindow)
                         .withStop(processHandler::destroyProcess, () -> !processHandler.isProcessTerminated());
                 Disposer.register(this, runContentExecutor);
                 runContentExecutor.run();

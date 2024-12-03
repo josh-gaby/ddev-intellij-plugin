@@ -10,6 +10,8 @@ public interface Runner {
 
     void run(@NotNull GeneralCommandLine commandLine, @NotNull String title, @Nullable Runnable afterCompletion);
 
+    void run(@NotNull GeneralCommandLine commandLine, @NotNull String title, @Nullable Runnable afterCompletion, boolean showWindow);
+
     static Runner getInstance(@NotNull Project project) {
         return project.getService(Runner.class);
     }
