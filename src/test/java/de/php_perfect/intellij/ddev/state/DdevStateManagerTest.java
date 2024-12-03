@@ -41,6 +41,7 @@ final class DdevStateManagerTest extends BasePlatformTestCase {
 
         ddevConfigLoader.setExists(true);
         this.prepareCommand("/foo/bar/bin/ddev --version", "ddev version v1.19.0");
+        this.prepareCommand("/foo/bar/bin/ddev xdebug status", "xdebug disabled");
         this.prepareCommandWithOutputFromFile("/foo/bar/bin/ddev describe --json-output", "src/test/resources/ddev_describe.json");
 
         DdevStateManager ddevStateManager = DdevStateManager.getInstance(project);
@@ -89,6 +90,7 @@ final class DdevStateManagerTest extends BasePlatformTestCase {
 
         ddevConfigLoader.setExists(true);
         this.prepareCommand("/foo/bar/bin/ddev --version", "ddev version v1.19.0");
+        this.prepareCommand("/foo/bar/bin/ddev xdebug status", "xdebug disabled");
         this.prepareCommandWithOutputFromFile("/foo/bar/bin/ddev describe --json-output", "src/test/resources/ddev_describe.json");
 
         DdevStateManager ddevStateManager = DdevStateManager.getInstance(this.getProject());
@@ -102,6 +104,7 @@ final class DdevStateManagerTest extends BasePlatformTestCase {
 
         Assertions.assertEquals(expectedState, ddevStateManager.getState());
 
+        this.prepareCommand("/foo/bar/bin/ddev xdebug status", "xdebug disabled");
         this.prepareCommandWithOutputFromFile("/foo/bar/bin/ddev describe --json-output", "src/test/resources/ddev_describe2.json");
 
         ddevStateManager.updateDescription();

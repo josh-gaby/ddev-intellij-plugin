@@ -58,6 +58,7 @@ final class DdevImplTest extends BasePlatformTestCase {
 
         MockProcessExecutor mockProcessExecutor = (MockProcessExecutor) ApplicationManager.getApplication().getService(ProcessExecutor.class);
         mockProcessExecutor.addProcessOutput("ddev describe --json-output", processOutput);
+        mockProcessExecutor.addProcessOutput("ddev xdebug status", new ProcessOutput("xdebug disabled", "", 0, false, false));
 
         Assertions.assertEquals(expected, new DdevImpl().describe("ddev", getProject()));
     }
