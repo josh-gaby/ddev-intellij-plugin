@@ -39,8 +39,12 @@ public final class DdevImpl implements Ddev {
     public @NotNull Description describe(final @NotNull String binary, final @NotNull Project project) throws CommandFailedException {
         Description description = execute(binary, "describe", Description.class, project);
         // Get XDebug current status
-        String status = executePlain(binary, "xdebug status", project).trim();
-        description.setXdebugStatus(status.equals("xdebug enabled"));
+        try {
+            String status = executePlain(binary, "xdebug status", project).trim();
+            description.setXdebugStatus(status.equals("xdebug enabled"));
+        } catch (CommandFailedException ignored) {
+            // Failed to check the status, leave it as is for now
+        }
 
         return description;
     }
