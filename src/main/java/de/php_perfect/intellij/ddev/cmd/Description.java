@@ -26,6 +26,8 @@ public class Description {
 
     private final @Nullable Status status;
 
+    private boolean xdebugEnabled = false;
+
     @SerializedName("mailhog_https_url")
     private final @Nullable String mailHogHttpsUrl;
 
@@ -72,6 +74,14 @@ public class Description {
 
     public @Nullable Status getStatus() {
         return this.status;
+    }
+
+    public @Nullable boolean getXdebugStatus() {
+        return this.xdebugEnabled;
+    }
+
+    public void setXdebugStatus(boolean status) {
+        this.xdebugEnabled = status;
     }
 
     public @Nullable String getMailHogHttpsUrl() {
@@ -142,6 +152,7 @@ public class Description {
                 ", services=" + services +
                 ", databaseInfo=" + databaseInfo +
                 ", primaryUrl='" + primaryUrl + '\'' +
+                ", xdebugEnabled='" + xdebugEnabled +
                 '}';
     }
 }

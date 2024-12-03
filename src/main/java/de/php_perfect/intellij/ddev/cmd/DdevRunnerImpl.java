@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public final class DdevRunnerImpl implements DdevRunner {
     private static final ExtensionPointName<DdevConfigArgumentProvider> CONFIG_ARGUMENT_PROVIDER_EP = ExtensionPointName.create("de.php_perfect.intellij.ddev.ddevConfigArgumentProvider");
@@ -64,6 +66,13 @@ public final class DdevRunnerImpl implements DdevRunner {
     }
 
     @Override
+    public void toggleXdebug(@NotNull Project project) {
+        final String title = DdevIntegrationBundle.message("ddev.run.toggleXdebug");
+        final Runner runner = Runner.getInstance(project);
+        runner.run(this.createCommandLine("xdebug toggle", project), title, () -> this.updateDescription(project));
+    }
+
+    @Override
     public void config(@NotNull Project project) {
         final String title = DdevIntegrationBundle.message("ddev.run.config");
         final Runner runner = Runner.getInstance(project);
@@ -103,7 +112,11 @@ public final class DdevRunnerImpl implements DdevRunner {
     private @NotNull GeneralCommandLine createCommandLine(@NotNull String ddevAction, @NotNull Project project) {
         State state = DdevStateManager.getInstance(project).getState();
 
-        return new PtyCommandLine(List.of(Objects.requireNonNull(state.getDdevBinary()), ddevAction))
+        List<String> commandsParts = new ArrayList<String>();
+        commandsParts.add(Objects.requireNonNull(state.getDdevBinary()));
+        commandsParts.addAll(Arrays.asList(ddevAction.trim().split("\\s+")));
+
+        return new PtyCommandLine(commandsParts)
                 .withInitialRows(30)
                 .withInitialColumns(120)
                 .withWorkDirectory(project.getBasePath())

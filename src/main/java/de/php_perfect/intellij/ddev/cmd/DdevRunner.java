@@ -8,6 +8,8 @@ public interface DdevRunner {
 
     void start(@NotNull Project project);
 
+    void toggleXdebug(@NotNull Project project);
+
     void restart(@NotNull Project project);
 
     void stop(@NotNull Project project);

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +37,12 @@ public final class DdevImpl implements Ddev {
     }
 
     public @NotNull Description describe(final @NotNull String binary, final @NotNull Project project) throws CommandFailedException {
-        return execute(binary, "describe", Description.class, project);
+        Description description = execute(binary, "describe", Description.class, project);
+        // Get XDebug current status
+        String status = executePlain(binary, "xdebug status", project).trim();
+        description.setXdebugStatus(status.equals("xdebug enabled"));
+
+        return description;
     }
 
     private @NotNull String executePlain(final @NotNull String binary, final @NotNull String action, final @NotNull Project project) throws CommandFailedException {
@@ -89,7 +95,7 @@ public final class DdevImpl implements Ddev {
     private @NotNull GeneralCommandLine createDdevCommandLine(final @NotNull String binary, final @NotNull String action, final @NotNull Project project, boolean json) {
         final ArrayList<String> arguments = Lists.newArrayList();
         arguments.add(binary);
-        arguments.add(action);
+        arguments.addAll(Arrays.asList(action.trim().split("\\s+")));
 
         if (json) {
             arguments.add("--json-output");
