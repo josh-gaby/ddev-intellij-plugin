@@ -17,7 +17,7 @@ public final class DdevToggleXdebugAction extends DdevRunAction {
         try {
             DdevRunner.getInstance().toggleXdebug(project);
         } catch (Exception ignored) {
-
+            // Do nothing
         }
     }
 
@@ -49,18 +49,6 @@ public final class DdevToggleXdebugAction extends DdevRunAction {
 
     @Override
     protected boolean isActive(@NotNull Project project) {
-        final State state = DdevStateManager.getInstance(project).getState();
-
-        if (!state.isAvailable() || !state.isConfigured()) {
-            return false;
-        }
-
-        Description description = state.getDescription();
-
-        if (description == null) {
-            return true;
-        }
-
-        return  description.getStatus() == Description.Status.RUNNING;
+        return this.isActiveHelper(project, true, true);
     }
 }
